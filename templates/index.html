@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Diabetes Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+  background:#05070d;
+  color:#fff;
+}
+
+.navbar{
+  width:100%;
+  padding:15px 30px;
+  background:#0b0f1a;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #1f2937;
+}
+
+.navbar h2{font-weight:700;}
+
+.container{
+  padding:30px;
+}
+
+.header{
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:36px;
+  font-weight:700;
+}
+
+.header p{
+  font-size:20px;
+  font-weight:600;
+  color:#9ca3af;
+}
+
+.dashboard{
+  display:flex;
+  gap:25px;
+}
+
+.card{
+  background:#0b0f1a;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.form-card{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr; /* two column inputs */
+  gap:15px;
+}
+
+.result-card{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.input-group{margin-bottom:5px;}
+
+.input-group label{
+  font-size:12px;
+  color:#9ca3af;
+}
+
+.input-group input{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#111827;
+  color:#fff;
+  margin-top:4px;
+}
+
+button{
+  grid-column:span 2; /* button full width under grid */
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#22c55e,#4ade80);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+}
+
+#chart{
+  width:100%;
+  height:280px;
+}
+
+.status{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  margin-top:15px;
+  text-align:center;
+}
+
+.low{background:#064e3b;}
+.mid{background:#78350f;}
+.high{background:#7f1d1d;}
+
+.download{
+  margin-top:10px;
+  padding:10px 15px;
+  border-radius:8px;
+  background:#111827;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <h2>🧠 AI Health Dashboard</h2>
+  <span>Diabetes Prediction System</span>
+</div>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Diabetes Risk Analysis</h1>
+    <p>AI Powered Health Analysis</p>
+  </div>
+
+  <div class="dashboard">
+
+    <!-- FORM -->
+    <div class="card form-card">
+      <div class="input-group"><label>Pregnancies</label><input type="number"></div>
+      <div class="input-group"><label>Glucose</label><input type="number"></div>
+      <div class="input-group"><label>Blood Pressure</label><input type="number"></div>
+      <div class="input-group"><label>Skin Thickness</label><input type="number"></div>
+      <div class="input-group"><label>Insulin</label><input type="number"></div>
+      <div class="input-group"><label>BMI</label><input type="number"></div>
+      <div class="input-group"><label>Diabetes Pedigree</label><input type="number"></div>
+      <div class="input-group"><label>Age</label><input type="number"></div>
+
+      <button onclick="predict()">🚀 Predict Now</button>
+    </div>
+
+    <!-- RESULT -->
+    <div class="card result-card">
+      <div id="chart"></div>
+      <div id="status" class="status">Waiting for prediction...</div>
+      
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function predict(){
+  let value = Math.random()*100;
+
+  let data = [{
+    type:"indicator",
+    mode:"gauge+number",
+    value:value,
+    title:{text:"Risk %",font:{color:"white"}},
+    gauge:{
+      axis:{range:[0,100]},
+      bar:{color:"#22c55e"},
+      steps:[
+        {range:[0,40],color:"green"},
+        {range:[40,70],color:"orange"},
+        {range:[70,100],color:"red"}
+      ]
+    }
+  }];
+
+  Plotly.newPlot('chart',data,{paper_bgcolor:'#0b0f1a',font:{color:'#fff'}});
+
+  let status=document.getElementById('status');
+
+  if(value<40){
+    status.className="status low";
+    status.innerHTML="✅ Low Risk - Healthy";
+  }
+  else if(value<70){
+    status.className="status mid";
+    status.innerHTML="⚠ Medium Risk - Monitor";
+  }
+  else{
+    status.className="status high";
+    status.innerHTML="❌ High Risk - Doctor Needed";
+  }
+}
+</script>
+
+</body>
+</html>
